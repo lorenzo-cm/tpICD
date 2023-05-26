@@ -1,1 +1,5 @@
+# dataset in csv
 *.csv
+
+# folders
+data
