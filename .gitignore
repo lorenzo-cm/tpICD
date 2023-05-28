@@ -3,3 +3,7 @@
 
 # folders
 data
+
+# files generated automatically
+.DS_Store
+.vscode

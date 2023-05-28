@@ -3,6 +3,7 @@ Sample phrases
 """
 
 import pandas as pd
+import seaborn as sns
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 
@@ -46,9 +47,6 @@ positive_phrases_list = [
 ]
 
 
-
-
-
 def vader_sample_test():
     """
     Function to test Vader
@@ -73,6 +71,7 @@ def vader_sample_test():
             return 0
         
         df = pd.DataFrame(phrases_list + negative_phrases_list + positive_phrases_list , columns=['phrases'])
+        
 
         
 
