@@ -4,6 +4,7 @@ Sample phrases
 
 import pandas as pd
 import seaborn as sns
+import matplotlib.pyplot as plt
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 
@@ -54,9 +55,6 @@ def vader_sample_test():
 
     analyzer = SentimentIntensityAnalyzer()
     
-    def polarity(phrase : str, analyzer=analyzer)  -> int:
-        return analyzer.polarity_scores(phrase)['compound']
-
     def classify(phrase_or_score : str | float , analyzer=analyzer) -> int:
         if isinstance(phrase_or_score, str):
             score = analyzer.polarity_scores(phrase_or_score)['compound']
@@ -70,9 +68,36 @@ def vader_sample_test():
         else:
             return 0
         
-        df = pd.DataFrame(phrases_list + negative_phrases_list + positive_phrases_list , columns=['phrases'])
-        
+    data = pd.DataFrame({'phrase': phrases_list + negative_phrases_list + positive_phrases_list,
+                    'label': [0]*len(phrases_list) + [-1]*len(negative_phrases_list) + [1]*len(positive_phrases_list)})
+    
+    data['preds'] = data['phrase'].apply(classify)
+    accuracy = (data['label'] == data['preds']).sum() / len(data)
+    print('-'*30)
+    print(f"Accuracy of the sample: {accuracy:.2f}")
+    print('-'*30)
+    
+    pred_results = []
+    for label in [-1,0,1]:
+        df_temp = data[(data['label'] == label)]
+        pred_results.append((df_temp['label'] == df_temp['preds']).sum())
 
-        
+    preds_data = pd.DataFrame({'numOfPreds': pred_results,
+            'status': ['prediction']*3,
+            'label':[-1,0,1]
+    })
 
-    return 'ac'
+    real_results = [10,10,10]
+    real_data = pd.DataFrame({'numOfPreds': real_results,
+            'status': ['real']*3,
+            'label':[-1,0,1]
+    })
+
+    full_data = pd.concat([real_data, preds_data])
+
+    sns.barplot(data=full_data, x='label', y='numOfPreds', hue='status', palette=['#3FA16A', '#A71D31'])
+    legend = plt.gca().get_legend()
+    legend.set_title('')
+    plt.show()
+
+vader_sample_test()
