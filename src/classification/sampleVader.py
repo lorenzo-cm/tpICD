@@ -74,7 +74,7 @@ def vader_sample_test():
     data['preds'] = data['phrase'].apply(classify)
     accuracy = (data['label'] == data['preds']).sum() / len(data)
     print('-'*30)
-    print(f"Accuracy of the sample: {accuracy:.2f}")
+    print(f"Model accuracy: {accuracy:.2f}")
     print('-'*30)
     
     pred_results = []

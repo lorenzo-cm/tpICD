@@ -4,6 +4,9 @@
 # folders
 data
 
+# folders generated automatically
+__pycache__ 
+
 # files generated automatically
 .DS_Store
 .vscode
