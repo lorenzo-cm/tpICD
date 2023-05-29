@@ -10,3 +10,6 @@ __pycache__
 # files generated automatically
 .DS_Store
 .vscode
+
+# zip files
+*.zip
