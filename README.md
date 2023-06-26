@@ -38,6 +38,7 @@ Além disso, outros arquivos também foram desenvolvidos nessa etapa, como o tes
 
 #### Para instalar as dependências:
 ```
+cd src/utils
 python3 installPackages.py
 ```
 
