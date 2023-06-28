@@ -1,5 +1,4 @@
 from googletrans import Translator
-from deep_translator import GoogleTranslator
 import pandas as pd
 import multiprocessing
 import threading
