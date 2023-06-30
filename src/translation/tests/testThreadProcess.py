@@ -23,12 +23,11 @@ def translate(series: pd.Series, target_language: str = 'en') -> pd.Series:
 df = pd.read_csv('../../data/chatgpt_daily_tweets.csv')
 df = df['text']
 
-
 print(f'Shape of dataset: {df.shape}')
 data_set = []
 old_index = 0
-for index in range(round((df.shape[0])/1000)):
-    data_set.append(df[old_index*1000:(index+1)*1000])
+for index in range(round((df.shape[0]) / 1000)):
+    data_set.append(df[old_index * 1000:(index + 1) * 1000])
     old_index = index + 1
 
 
@@ -37,31 +36,27 @@ def translate_parallel(list_of_series, index):
 
     for _ in range(10):
         index_of_data_set = index * 10 + _
-        t = threading.Thread(target=translate(data_set[index_of_data_set], target_language='en'))
+        t = threading.Thread(target=translate, args=(data_set[index_of_data_set], 'en'))
         t.start()
         threads.append(t)
     
     for t in threads:
         t.join()
 
-def run_processes():
+
+if __name__ == '__main__':
+    start = time.perf_counter()
+
     processes = []
-    num_of_processes = 6
+    num_of_processes = 12
     for _ in range(num_of_processes):
-        p = multiprocessing.Process(target=translate_parallel, args=[data_set, _])
+        p = multiprocessing.Process(target=translate_parallel, args=(data_set, _))
         p.start()
         processes.append(p)
-
 
     for p in processes:
         p.join()
 
-if __name__ == '__main__':
-
-    start = time.perf_counter()
-
-    run_processes()
-
     finish = time.perf_counter()
 
-    print(f'Time taken: {finish - start} ')
+    print(f'Time taken: {finish - start} seconds')
