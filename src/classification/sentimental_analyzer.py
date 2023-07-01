@@ -110,7 +110,8 @@ class SentimentalAnalyzer:
         return df
 
 
-    def classify_df_parallel(self, df: pd.DataFrame, column_name: str, add_col: bool = False,
+    def classify_df_parallel(self, df: pd.DataFrame, text_column_name: str, 
+                             add_col: bool = False,
                              new_col_name: str = 'sentiment') -> pd.DataFrame:
         """
         Classifies the sentiment of a DataFrame column containing phrases in parallel using threads.
@@ -129,10 +130,16 @@ class SentimentalAnalyzer:
             - If `add_col` is set to True, a new column with the name specified in `new_col_name` will be added to the DataFrame,
             containing the sentiment classifications.
         """
+        df_new = pd.DataFrame()
+        
+        # add new col
         if add_col:
-            df[new_col_name] = self.classify_list_parallel(df[column_name].tolist())
+            df[new_col_name] = self.classify_list_parallel(df[text_column_name].tolist())
+
+        # do not add new col and return just the polarities
         else:
-            df[column_name] = self.classify_list_parallel(df[column_name].tolist())
+            df_new = self.classify_list_parallel(df[text_column_name].tolist())
+            return df_new
             
         return df
 
