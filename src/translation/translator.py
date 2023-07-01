@@ -56,10 +56,3 @@ class Translator:
     def translate_df_parallel(self, df: pd.DataFrame, column_name: str):
         df[column_name] = self.translate_list_parallel(df[column_name].tolist())
         return df
-"""     
-T =  Translator()
-
-
-chatGPT1_notEN = pd.read_csv('./chatGPT1_notEN.csv')
-
-T.translate_df_parallel(T, chatGPT1_notEN, 'Text') """
