@@ -1,4 +1,5 @@
-from deep_translator import GoogleTranslator
+from googletrans import Translator as GoogleTranslator
+from time import sleep
 from threading import Thread
 import pandas as pd
 from tqdm import tqdm
@@ -6,14 +7,12 @@ from tqdm import tqdm
 class Translator:
 
     def __init__(self) -> None:
-        self.translator = GoogleTranslator(source='auto', target='en')
+        self.translator = GoogleTranslator()
     
-    def getT ():
-        pass
-
+    
     def translate(self, text: str):
         try:
-            translated_text = self.translator.translate(text)
+            translated_text = self.translator.translate(text, dest='en').text
             return translated_text
         except:
             return ''
@@ -38,6 +37,8 @@ class Translator:
         threads = []
 
         for text in tqdm(texts):
+            # A API CALL NÃO SUPORTA MUITAS CHAMADAS POR SEGUNDO
+            sleep(0.01) # tentativa de suavizar o problema
             t = Thread(target=execute_translation, args=[text])
             threads.append(t)
             t.start()
