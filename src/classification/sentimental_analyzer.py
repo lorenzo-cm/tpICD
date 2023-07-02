@@ -95,7 +95,7 @@ class SentimentalAnalyzer:
         return scores
 
 
-    def classify_df(self, df: pd.DataFrame, column_name: str) -> pd.DataFrame:
+    def classify_df(self, df: pd.DataFrame, column_name: str) -> list:
         """
         Classifies the sentiment of a DataFrame column containing phrases.
 
@@ -104,15 +104,14 @@ class SentimentalAnalyzer:
             column_name (str): The name of the column to classify.
 
         Returns:
-            pd.DataFrame: The modified DataFrame with an additional column containing sentiment classifications.
+            list: a list with the polarities
         """
-        df[column_name] = self.classify_list(df[column_name].tolist())
-        return df
+        return self.classify_list(df[column_name].tolist())
 
 
     def classify_df_parallel(self, df: pd.DataFrame, text_column_name: str, 
                              add_col: bool = False,
-                             new_col_name: str = 'sentiment') -> pd.DataFrame:
+                             new_col_name: str = 'polarity') -> pd.DataFrame|list:
         """
         Classifies the sentiment of a DataFrame column containing phrases in parallel using threads.
 
@@ -124,6 +123,8 @@ class SentimentalAnalyzer:
 
         Returns:
             pd.DataFrame: The modified DataFrame with an additional column containing sentiment classifications.
+            or
+            list: if add_col is False, returns a list containing polarities
 
         Notes:
             - If `add_col` is set to False, the sentiment classifications will replace the values in the `column_name` column.
@@ -138,8 +139,7 @@ class SentimentalAnalyzer:
 
         # do not add new col and return just the polarities
         else:
-            df_new = self.classify_list_parallel(df[text_column_name].tolist())
-            return df_new
+            return self.classify_list_parallel(df[text_column_name].tolist())
             
         return df
 
